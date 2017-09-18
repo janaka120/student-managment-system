@@ -6,6 +6,7 @@ namespace SIS\Repositories;
 
 // use Illuminate\Validation\validate;
 use SIS\Models\Student;
+use DateTime;
 
 class StudentRepository
 {
@@ -34,8 +35,8 @@ class StudentRepository
 
 	public static function getStudentsList()
 	{
-		$student = Student::all();
-		return $student;
+		$students = Student::paginate(10);
+		return $students;
 	}
 
 	public static function deleteStudent($id) 
