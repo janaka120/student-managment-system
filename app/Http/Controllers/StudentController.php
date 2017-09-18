@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatingStudentRequest;
+// use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use SIS\Repositories\StudentRepository;
 use SIS\Services\StudentService;
+use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
@@ -16,7 +19,6 @@ class StudentController extends Controller
     public function index()
     {   
         $students = StudentService::getAllStudents();
-  
         if($students['success']) {
             $students = $students['data'];
             return view('student.studentsList', compact('students'));    
@@ -43,8 +45,9 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatingStudentRequest $request)
     {
+
         $data = [
             "name" => $request->input('name'),
             "email" => $request->input('email'),
@@ -55,7 +58,11 @@ class StudentController extends Controller
 
         $student = StudentService::createStudent($data);
         if($student['success']) {
+            $request->session()->flash('alert-success', 'Create student successfully.');
             return redirect('student');
+        }else{
+            $request->session()->flash('alert-danger', 'Create student failed.');
+            return redirect()->back()->withInput();
         }
     }
 
@@ -124,9 +131,11 @@ class StudentController extends Controller
         $result = StudentService::deleteStudent($id);
 
         if($result['success']) {
+            Session::flash('alert-success', 'Delete student successfully.');
             return redirect('student');
         }
 
+        Session::flash('alert-danger', 'Delete student failed.');
         return redirect('student');
     }
 }
