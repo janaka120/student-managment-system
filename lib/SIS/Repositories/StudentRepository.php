@@ -15,14 +15,6 @@ class StudentRepository
 	{
 		$student = new Student;
 
-        // $this->validate($data, [
-        //     'name'=>'required',
-        //     'email'=>'required',
-        //     'address'=>'required',
-        //     'dob'=>'required|date',
-        //     'gender'=>'required',
-        // ]);
-
         $student->name = $data['name'];
         $student->email = $data['email'];
         $student->dob = $data['dob'];
