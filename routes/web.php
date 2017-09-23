@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('student', 'StudentController');
+Route::get('student/{id}/delete', 'StudentController@destroy')->name('student.delete');
